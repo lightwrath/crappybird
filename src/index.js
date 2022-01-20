@@ -1,28 +1,43 @@
+import Phaser from 'phaser'
+import PreloadScene from "./scenes/PreloadScene"
+import MenuScene from "./scenes/MenuScene"
+import PlayScene from "./scenes/PlayScene"
+import ScoreScene from "./scenes/ScoreScene"
+import PauseScene from "./scenes/PauseScene"
 
-import Phaser from "phaser";
+const WIDTH = 800
+const HEIGHT = 600
+
+const sharedConfig = {
+  width: WIDTH,
+  height: HEIGHT,
+  startPosition: {
+    x: WIDTH * 0.1,
+    y: HEIGHT /2
+  }
+}
+
+const Scenes = [
+  PreloadScene,
+  MenuScene,
+  ScoreScene,
+  PlayScene,
+  PauseScene,
+]
+
+const initScenes = () => Scenes.map(Scene => new Scene(sharedConfig))
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  ...sharedConfig,
+  pixelArt: true,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 200 }
+      //debug: true
     }
   },
-  scene: {
-    preload: preload,
-    create: create
-  }
-};
-
-new Phaser.Game(config);
-
-function preload () {
-  this.load.image('sky', 'assets/sky.png');
+  scene: initScenes()
 }
 
-function create () {
-  this.add.image(400, 300, 'sky');
-}
+new Phaser.Game(config)
